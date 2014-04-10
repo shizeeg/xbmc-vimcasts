@@ -10,6 +10,7 @@
 import re
 import HTMLParser
 from urllib2 import urlopen
+import string
 try:
     import json
 except ImportError:
@@ -26,7 +27,8 @@ def get_json_feed():
     '''Loads the JSON feed for vimcasts.org.'''
     json_url = 'http://vimcasts.org/episodes.json?referrer=xbmc'
     conn = urlopen(json_url)
-    _json = json.load(conn)
+    _data = conn.read().decode('utf-8')
+    _json = json.loads(string.replace(_data, "\\'", ""))
     conn.close()
     return _json
 
